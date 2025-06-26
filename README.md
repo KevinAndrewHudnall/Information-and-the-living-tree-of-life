@@ -13,3 +13,16 @@ Implements a **random iterated function system (RIFS)** to generate a multifract
 - At each iteration, the function draws a random scale and spawns recursive subtrees using a random branching process (up to `MaxOffspring` and `MaxGens`), resulting in a deeply nested multifractal structure.  
 - The matrices explicitly reconstruct the full history of the tree, making them suitable for entropy analysis, observer-relative measurements, and figure generation.  
 - Used as the core generative engine for the tree shown in **Videos 1, 2** and **Figures 5, 7**, of the manuscript.
+  
+### `CalculateFractalDimsFn.m`
+
+Estimates the **fractal (correlation) dimension** of each lineage path in a multifractal tree.  
+- Uses the epsilon-neighborhood method, counting point pairs closer than ε across generations.  
+- Applies log–log linear regression to compute the correlation dimension \( D_F \) and goodness-of-fit (R²) for each path.  
+- Outputs:
+  - `D_F`: matrix of correlation dimensions across all paths and generations  
+  - `R_Squared`: R² values indicating fit quality  
+  - `Avg_R2_Vector`, `Std_Devs`: generation-wise statistics on fit quality  
+  - A diagnostic analysis of a randomly selected path, including its dimension and correlation curve  
+- Supports evaluation of scaling behavior and reliability across the multifractal structure  
+- Used in quantifying scale-dependent complexity and verifying that pathwise growth exhibits fractal scaling
