@@ -12,4 +12,4 @@ Implements a **random iterated function system (RIFS)** to generate a multifract
   - `H` – entropy estimated as the log-change in scale from generation to generation  
 - At each iteration, the function draws a random scale and spawns recursive subtrees using a random branching process (up to `MaxOffspring` and `MaxGens`), resulting in a deeply nested multifractal structure.  
 - The matrices explicitly reconstruct the full history of the tree, making them suitable for entropy analysis, observer-relative measurements, and figure generation.  
-- Used as the core generative engine for the tree shown in **Figure 14** of the manuscript.
+- Used as the core generative engine for the tree shown in **Videos 1,2** and **Figures 5, 7**, of the manuscript.
