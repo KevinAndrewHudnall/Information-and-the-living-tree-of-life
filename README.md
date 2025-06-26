@@ -39,3 +39,17 @@ Generates all figures presented in the manuscript *Information and the Living Tr
 - Assumes data variables (e.g., `Randomly_Reduced_S`, `Crosspath_H_Reduced`, `Dil_Eq_Real_Sols`) are available in the workspace  
 
 This script serves as the visual output module for the entire analysis pipeline, ensuring full reproducibility of the figures used in publication.
+
+### `GetCrosspathQuantities.m`
+
+Computes all pairwise information-theoretic quantities and dilation equation solutions between leaves of a multifractal tree — one chunk at a time.  
+- Used to parallelize and scale the computation of crosspath relationships between leaves.  
+- For each chunk (indexed by `k`), returns a structured output (`Data_Chunk`) with:
+  - Locations and values of most recent common ancestors (MRCA)
+  - Pairwise entropy, mutual information, and information distance (H, I, d)
+  - Crosspath fractal dimension estimates at MRCAs
+  - Solutions to the dilation equation and their classification as real or complex
+  - Counts of coherent (positive), divergent (negative), imaginary, and indeterminant comparisons  
+- Filters out unresolved comparisons using a user-provided `Conv_Tol` matrix  
+- Core function behind Figures 8, 9, and 10 in the manuscript, enabling scalable evaluation of pairwise information structure and observer-relative time dynamics
+
