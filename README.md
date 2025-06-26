@@ -90,6 +90,24 @@ Generates a random rooted tree using a Galton–Watson branching process with a 
 
 This function underlies the iterative generation of nested subtrees in the multifractal tree-building process.
 
+### `MfDfaFn.m`
+
+Performs **Multifractal Detrended Fluctuation Analysis (MF-DFA)** on each lineage path in the scale matrix `S`.  
+- Inputs:
+  - `S`: scale matrix, where each column is a path through the tree
+  - `q_Values`: list of moments q to evaluate (e.g., -5 to 5)
+  - `Box_Sizes`: set of window sizes used to analyze scaling behavior  
+- Outputs:
+  - `Generalized_Hurst_values`: a matrix of generalized Hurst exponents H(q), capturing multifractal scaling per path and per moment q  
+- Internally:
+  - Integrates and detrends each time series path
+  - Computes root-mean-square fluctuations in boxes of varying sizes
+  - Aggregates fluctuations across moments q
+  - Fits log–log curves to determine scaling exponents
+
+Used in **Figure E1** of the manuscript to characterize the multifractal geometry of observer-relative paths through the tree of life.
+
+
 - Tunable parameters: `Chunk_Size`, `MaxOffspring`, `MaxGens`, and convergence `Tolerance`  
 - Core script behind large-scale analyses and Figures 6–10 in the manuscript
 
