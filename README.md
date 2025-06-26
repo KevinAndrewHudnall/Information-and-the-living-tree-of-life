@@ -53,3 +53,25 @@ Computes all pairwise information-theoretic quantities and dilation equation sol
 - Filters out unresolved comparisons using a user-provided `Conv_Tol` matrix  
 - Core function behind Figures 8, 9, and 10 in the manuscript, enabling scalable evaluation of pairwise information structure and observer-relative time dynamics
 
+  ### `Main_Script.m`
+
+**Warning: This script is computationally intensive.**  
+It performs large-scale simulation and analysis and is designed to run on machines with **multiple CPU cores and ≥32 GB RAM**. It is not suitable for laptops or low-memory environments.
+
+---
+
+Primary execution pipeline for generating a large multifractal tree and calculating all pairwise crosspath information quantities using parallel processing.  
+- Constructs a deeply nested random tree via recursive iterated function systems  
+- Calculates correlation dimensions (D_F) for each lineage path  
+- Determines which comparisons are valid based on convergence of D_F  
+- Divides leaf comparisons into chunks and computes:
+  - Joint entropy
+  - Mutual information
+  - Information distance
+  - Most recent common ancestors (MRCA)
+  - Solutions to the dilation equation (real and complex)
+- Uses `parfeval` to parallelize chunk processing and saves each chunk to disk for later merging  
+- Tunable parameters: `Chunk_Size`, `MaxOffspring`, `MaxGens`, and convergence `Tolerance`  
+- Core script behind large-scale analyses and Figures 6–10 in the manuscript
+
+
