@@ -1,133 +1,159 @@
-# Information-and-the-living-tree-of-life
-Contains all the program and data files for the paper "Information and the living tree of life: A theory of time and measurement grounded in biology".
-The code used to generate animations is not included in this repository but can be found at https://github.com/KevinAndrewHudnall/the-living-tree-of-life.
+# Information-and-the-Living-Tree-of-Life
 
-## Data Availability
-The full dataset (≈2.5 GB) used in this study is archived on Zenodo:
-10.5281/zenodo.15749593
-This includes all data required to reproduce the figures, simulations, and analyses described in the manuscript *Information and the Living Tree of Life*.
+This repository contains all program and data files associated with the manuscript:  
+**_Information and the Living Tree of Life: A Theory of Time and Measurement Grounded in Biology_**.
 
-### `BuildMultifractalTreeFn.m`
-Implements a **random iterated function system (RIFS)** to generate a multifractal branching tree.  
-- Returns three matrices:
-  - `S` – scale values across generations and lineages  
-  - `P` – number of progeny per node, preserving ancestral structure  
-  - `H` – entropy estimated as the log-change in scale from generation to generation  
-- At each iteration, the function draws a random scale and spawns recursive subtrees using a random branching process (up to `MaxOffspring` and `MaxGens`), resulting in a deeply nested multifractal structure.  
-- The matrices explicitly reconstruct the full history of the tree, making them suitable for entropy analysis, observer-relative measurements, and figure generation.  
-- Used as the core generative engine for the tree shown in **Videos 1, 2** and **Figures 5, 7**, of the manuscript.
-  
-### `CalculateFractalDimsFn.m`
+The code implements a stochastic, information-theoretic framework for understanding evolutionary dynamics, multifractal geometry, and observer-relative time.
 
-Estimates the **fractal (correlation) dimension** of each lineage path in a multifractal tree.  
-- Uses the epsilon-neighborhood method, counting point pairs closer than ε across generations.  
-- Applies log–log linear regression to compute the correlation dimension \( D_F \) and goodness-of-fit (R²) for each path.  
-- Outputs:
-  - `D_F`: matrix of correlation dimensions across all paths and generations  
-  - `R_Squared`: R² values indicating fit quality  
-  - `Avg_R2_Vector`, `Std_Devs`: generation-wise statistics on fit quality  
-  - A diagnostic analysis of a randomly selected path, including its dimension and correlation curve  
-- Supports evaluation of scaling behavior and reliability across the multifractal structure  
-- Used in quantifying scale-dependent complexity and verifying that pathwise growth exhibits fractal scaling
-
-### `DataPlots.m`
-
-Generates all figures presented in the manuscript *Information and the Living Tree of Life* using precomputed data.  
-- Produces plots of nested form and entropy dynamics (Figure 5 and 7)  
-- Displays fractal dimension scaling across paths and pairwise comparisons (Figure 6 and D1)  
-- Visualizes pairwise joint entropy, mutual information, and information distance (Figures 8–9)  
-- Plots real and complex solutions to the dilation equation (Figure 10)  
-- Depicts observer-relative rates of time elapse (Figure 12)  
-- Renders MF-DFA results across q moments (Figure E1)  
-- Assumes data variables (e.g., `Randomly_Reduced_S`, `Crosspath_H_Reduced`, `Dil_Eq_Real_Sols`) are available in the workspace  
-
-This script serves as the visual output module for the entire analysis pipeline, ensuring full reproducibility of the figures used in publication.
-
-### `GetCrosspathQuantities.m`
-
-Computes all pairwise information-theoretic quantities and dilation equation solutions between leaves of a multifractal tree — one chunk at a time.  
-- Used to parallelize and scale the computation of crosspath relationships between leaves.  
-- For each chunk (indexed by `k`), returns a structured output (`Data_Chunk`) with:
-  - Locations and values of most recent common ancestors (MRCA)
-  - Pairwise entropy, mutual information, and information distance (H, I, d)
-  - Crosspath fractal dimension estimates at MRCAs
-  - Solutions to the dilation equation and their classification as real or complex
-  - Counts of coherent (positive), divergent (negative), imaginary, and indeterminant comparisons  
-- Filters out unresolved comparisons using a user-provided `Conv_Tol` matrix  
-- Core function behind Figures 8, 9, and 10 in the manuscript, enabling scalable evaluation of pairwise information structure and observer-relative time dynamics
-
-### `Main_Script.m`
-
-**Warning: This script is computationally intensive.**  
-It performs large-scale simulation and analysis and is designed to run on machines with **multiple CPU cores and high GB RAM**. It is not suitable for laptops or low-memory environments. Reducing ITERATIONS will reduce computational expense.
+> The code for generating animations can be found in a separate repository:  
+> https://github.com/KevinAndrewHudnall/the-living-tree-of-life
 
 ---
 
-Primary execution pipeline for generating a large multifractal tree and calculating all pairwise crosspath information quantities using parallel processing.  
-- Constructs a deeply nested random tree via recursive iterated function systems  
-- Calculates correlation dimensions (D_F) for each lineage path  
-- Determines which comparisons are valid based on convergence of D_F  
-- Divides leaf comparisons into chunks and computes:
-  - Joint entropy
-  - Mutual information
-  - Information distance
-  - Most recent common ancestors (MRCA)
-  - Solutions to the dilation equation (real and complex)
-- Uses `parfeval` to parallelize chunk processing and saves each chunk to disk for later merging
+## Data Availability
 
-### `MakeRandomTree.m`
+The full dataset (~2.5 GB) used in this study is archived on Zenodo:  
+**https://doi.org/10.5281/zenodo.15749593**
 
-Generates a random rooted tree using a Galton–Watson branching process with a randomly sampled offspring distribution.  
-- Inputs:  
-  - `Max_Offspring`: maximum number of offspring per node  
-  - `Max_Gens`: maximum number of generations before termination  
-- Output:  
-  - `Tree`: the number of leaves (terminal nodes) in the final tree  
-- At each run, the function randomly selects a tree depth and samples a branching process, continuing until extinction or reaching the generation limit  
-- Returns only the **number of leaves**, not the tree structure — it is designed to integrate with scale propagation in `BuildMultifractalTreeFn`  
-- For full tree structure visualization, see the companion function `MakeRandomTreeForVisual.m` at:  
-  [github.com/KevinAndrewHudnall/the-living-tree-of-life](https://github.com/KevinAndrewHudnall/the-living-tree-of-life/tree/main/Functions)  
+This archive includes all data required to reproduce the manuscript's simulations, figures, and statistical analyses.
 
-This function underlies the iterative generation of nested subtrees in the multifractal tree-building process.
+---
+
+## Main Execution Pipeline
+
+### `Main_Script.m`
+
+**Warning: This script is computationally intensive and designed for high-memory machines with multiple CPU cores.**  
+Reducing the `ITERATIONS` parameter lowers computational cost.
+
+This is the primary driver for:
+
+- Constructing a multifractal branching tree (`BuildMultifractalTreeFn`)
+- Computing correlation dimensions of all paths (`CalculateFractalDimsFn`)
+- Identifying valid pairwise comparisons based on convergence
+- Computing pairwise quantities using `parfeval`, including:
+  - Joint entropy \( H \)
+  - Mutual information \( I \)
+  - Information distance \( d \)
+  - Fractal dimension at the most recent common ancestor (MRCA)
+  - Real and complex solutions to the dilation equation
+
+Results are saved chunk-by-chunk and later aggregated.
+
+---
+
+## Core Functionality
+
+### `BuildMultifractalTreeFn.m`
+
+Implements a random iterated function system (RIFS) to generate a multifractal evolutionary tree.
+
+- Outputs:
+  - `S` – scale matrix (nodes × lineages)
+  - `P` – offspring count matrix
+  - `H` – entropy from intergenerational scale transitions
+- Recursively spawns subtrees using a random branching and scaling process
+- Basis for Figures 5, 7 and Videos 1–2
+
+---
+
+### `CalculateFractalDimsFn.m`
+
+Estimates the fractal (correlation) dimension of each lineage using the ε-neighborhood method.
+
+- Computes log–log regression of neighbor count vs. ε
+- Outputs:
+  - `D_F` – dimension matrix
+  - `R_Squared` – fit quality
+  - Summary statistics across generations
+- Supports filtering by convergence and scaling diagnostics (used in Figure 6)
+
+---
 
 ### `MfDfaFn.m`
 
-Performs **Multifractal Detrended Fluctuation Analysis (MF-DFA)** on each lineage path in the scale matrix `S`.  
-- Inputs:
-  - `S`: scale matrix, where each column is a path through the tree
-  - `q_Values`: list of moments q to evaluate (e.g., -5 to 5)
-  - `Box_Sizes`: set of window sizes used to analyze scaling behavior  
-- Outputs:
-  - `Generalized_Hurst_values`: a matrix of generalized Hurst exponents H(q), capturing multifractal scaling per path and per moment q  
-- Internally:
-  - Integrates and detrends each time series path
-  - Computes root-mean-square fluctuations in boxes of varying sizes
-  - Aggregates fluctuations across moments q
-  - Fits log–log curves to determine scaling exponents
+Performs Multifractal Detrended Fluctuation Analysis (MF-DFA) on lineage paths.
 
-Used in **Figure E1** of the manuscript to characterize the multifractal geometry of observer-relative paths through the tree of life.
+- Inputs: `S`, `q_Values`, `Box_Sizes`
+- Outputs:
+  - `Generalized_Hurst_values`: matrix of H(q) exponents per path and moment q
+- Used in Figure E1 to characterize multifractal scaling of time along biological lineages
+
+---
+
+### `GetCrosspathQuantities.m`
+
+Processes one chunk of pairwise comparisons at a time to compute crosspath quantities.
+
+- Inputs: `S`, `H`, `Conv_Tol`, and chunk index `k`
+- Computes for each pair:
+  - MRCA location and value
+  - Joint entropy, mutual information, information distance
+  - Fractal dimension at MRCA
+  - Real/complex solution to the dilation equation
+- Filters unresolved or indeterminant comparisons
+- Used to generate Figures 8, 9, and 10
+
+---
 
 ### `Statistical_Confirmation.m`
 
-Runs multiple full-system simulations to verify the statistical representativeness of key crosspath quantities reported in the manuscript.  
-- For each run, constructs a multifractal tree and samples `n` leaf paths  
-- Computes `nchoosek(n, 2)` pairwise comparisons per run  
-- For each comparison:
-  - Identifies the most recent common ancestor (MRCA)
-  - Computes crosspath entropy (H), mutual information (I), and information distance (d)
-  - Solves the dilation equation and classifies the solution (real/imaginary)  
-- Tallies proportions of:
-  - Coherent (d > 0) vs. divergent (d < 0) comparisons
-  - Real vs. imaginary solutions to the dilation equation
-  - Convergent, unresolved, and indeterminant cases  
-- Repeats this process across multiple runs (e.g., 10)  
-- Outputs the mean and standard deviation of all relevant proportions
+**Warning: This script is computationally expensive and should be run on a workstation.**
 
-**Warning:** This script is computationally intensive and may require long runtime and high memory. It should be run on a workstation with multiple CPU cores and adequate RAM.
+Validates that the proportions of coherent, divergent, convergent, unresolved, and indeterminant outcomes are statistically representative:
 
-Used to confirm the validity of statistics shown in Figures 10–12 in the manuscript.
+- Repeats the entire simulation and analysis pipeline multiple times
+- For each run:
+  - Constructs a multifractal tree
+  - Samples a subset of paths (`n`)
+  - Computes \( \binom{n}{2} \) pairwise comparisons
+  - Calculates H, I, d, MRCA, and dilation solution
+  - Tallies result types (coherent, divergent, real, imaginary, etc.)
+- Outputs mean and standard deviation across runs
+- Basis for Figures 10–12
 
-- Tunable parameters: `Chunk_Size`, `MaxOffspring`, `MaxGens`, and convergence `Tolerance`  
-- Core script behind large-scale analyses and Figures 6–10 in the manuscript
+---
 
+## Visualization and Analysis
 
+### `DataPlots.m`
+
+Generates all manuscript figures from precomputed data:
+
+- Nested structure and entropy dynamics (Figures 5, 7)
+- Pathwise fractal dimension scaling (Figures 6, D1)
+- Information quantities and dilation equation solutions (Figures 8–10)
+- Observer-relative time rate distributions (Figure 12)
+- MF-DFA analysis (Figure E1)
+
+Assumes relevant variables are loaded into the MATLAB workspace.
+
+---
+
+## Supporting Components
+
+### `MakeRandomTree.m`
+
+Generates a Galton–Watson random tree:
+
+- Inputs: `Max_Offspring`, `Max_Gens`
+- Output: number of terminal nodes (leaves)
+- Used inside `BuildMultifractalTreeFn` to define tree topology
+
+Note: This function returns the number of leaves, not the full structure. For visual tree structures, see the companion function in:  
+[https://github.com/KevinAndrewHudnall/the-living-tree-of-life/tree/main/Functions](https://github.com/KevinAndrewHudnall/the-living-tree-of-life/tree/main/Functions)
+
+---
+
+## Summary Table
+
+| Script / Function             | Purpose                                                    |
+|------------------------------|-------------------------------------------------------------|
+| `Main_Script.m`              | Runs the full simulation and analysis pipeline              |
+| `BuildMultifractalTreeFn.m` | Generates multifractal evolutionary trees                   |
+| `CalculateFractalDimsFn.m`  | Computes fractal dimension of paths                         |
+| `MfDfaFn.m`                 | Computes Hurst exponents via MF-DFA                         |
+| `GetCrosspathQuantities.m`  | Computes pairwise information & dilation results            |
+| `Statistical_Confirmation.m`| Validates representativeness via simulations                |
+| `DataPlots.m`               | Generates all manuscript figures                            |
+| `MakeRandomTree.m`          | Samples a Galton–Watson branching tree                      |
