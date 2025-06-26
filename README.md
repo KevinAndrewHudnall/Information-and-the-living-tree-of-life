@@ -27,7 +27,7 @@ Estimates the **fractal (correlation) dimension** of each lineage path in a mult
 - Supports evaluation of scaling behavior and reliability across the multifractal structure  
 - Used in quantifying scale-dependent complexity and verifying that pathwise growth exhibits fractal scaling
 
-### `GenerateFiguresFn.m`
+### `DataPlots.m`
 
 Generates all figures presented in the manuscript *Information and the Living Tree of Life* using precomputed data.  
 - Produces plots of nested form and entropy dynamics (Figure 5 and 7)  
