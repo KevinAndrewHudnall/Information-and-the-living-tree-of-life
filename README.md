@@ -26,3 +26,16 @@ Estimates the **fractal (correlation) dimension** of each lineage path in a mult
   - A diagnostic analysis of a randomly selected path, including its dimension and correlation curve  
 - Supports evaluation of scaling behavior and reliability across the multifractal structure  
 - Used in quantifying scale-dependent complexity and verifying that pathwise growth exhibits fractal scaling
+
+### `GenerateFiguresFn.m`
+
+Generates all figures presented in the manuscript *Information and the Living Tree of Life* using precomputed data.  
+- Produces plots of nested form and entropy dynamics (Figure 5 and 7)  
+- Displays fractal dimension scaling across paths and pairwise comparisons (Figure 6 and D1)  
+- Visualizes pairwise joint entropy, mutual information, and information distance (Figures 8–9)  
+- Plots real and complex solutions to the dilation equation (Figure 10)  
+- Depicts observer-relative rates of time elapse (Figure 12)  
+- Renders MF-DFA results across q moments (Figure E1)  
+- Assumes data variables (e.g., `Randomly_Reduced_S`, `Crosspath_H_Reduced`, `Dil_Eq_Real_Sols`) are available in the workspace  
+
+This script serves as the visual output module for the entire analysis pipeline, ensuring full reproducibility of the figures used in publication.
