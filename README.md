@@ -42,7 +42,7 @@ Results are saved chunk-by-chunk and later aggregated.
 
 ---
 
-## Core Functionality
+## Core Functions
 
 ### `BuildMultifractalTreeFn.m`
 
@@ -96,6 +96,24 @@ Processes one chunk of pairwise comparisons at a time to compute crosspath quant
 
 ---
 
+### `MakeRandomTree.m`
+
+Generates a Galton–Watson random tree using a randomly sampled offspring distribution.
+
+- Inputs:
+  - `Max_Offspring`: maximum number of offspring per node
+  - `Max_Gens`: maximum number of generations
+- Output:
+  - `Tree`: number of terminal nodes (leaves) in the resulting tree
+- Used by `BuildMultifractalTreeFn` to instantiate the stochastic backbone of each multifractal subtree
+
+Note: This function returns only the number of leaves. For tree structure visualization, see `MakeRandomTreeForVisual.m` in:  
+[https://github.com/KevinAndrewHudnall/the-living-tree-of-life/tree/main/Functions](https://github.com/KevinAndrewHudnall/the-living-tree-of-life/tree/main/Functions)
+
+---
+
+## Statistical Validation
+
 ### `Statistical_Confirmation.m`
 
 **Warning: This script is computationally expensive and should be run on a workstation.**
@@ -130,21 +148,6 @@ Assumes relevant variables are loaded into the MATLAB workspace.
 
 ---
 
-## Supporting Components
-
-### `MakeRandomTree.m`
-
-Generates a Galton–Watson random tree:
-
-- Inputs: `Max_Offspring`, `Max_Gens`
-- Output: number of terminal nodes (leaves)
-- Used inside `BuildMultifractalTreeFn` to define tree topology
-
-Note: This function returns the number of leaves, not the full structure. For visual tree structures, see the companion function in:  
-[https://github.com/KevinAndrewHudnall/the-living-tree-of-life/tree/main/Functions](https://github.com/KevinAndrewHudnall/the-living-tree-of-life/tree/main/Functions)
-
----
-
 ## Summary Table
 
 | Script / Function             | Purpose                                                    |
@@ -154,6 +157,6 @@ Note: This function returns the number of leaves, not the full structure. For vi
 | `CalculateFractalDimsFn.m`  | Computes fractal dimension of paths                         |
 | `MfDfaFn.m`                 | Computes Hurst exponents via MF-DFA                         |
 | `GetCrosspathQuantities.m`  | Computes pairwise information & dilation results            |
+| `MakeRandomTree.m`          | Samples a Galton–Watson branching tree                      |
 | `Statistical_Confirmation.m`| Validates representativeness via simulations                |
 | `DataPlots.m`               | Generates all manuscript figures                            |
-| `MakeRandomTree.m`          | Samples a Galton–Watson branching tree                      |
