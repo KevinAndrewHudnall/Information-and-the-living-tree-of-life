@@ -53,10 +53,10 @@ Computes all pairwise information-theoretic quantities and dilation equation sol
 - Filters out unresolved comparisons using a user-provided `Conv_Tol` matrix  
 - Core function behind Figures 8, 9, and 10 in the manuscript, enabling scalable evaluation of pairwise information structure and observer-relative time dynamics
 
-  ### `Main_Script.m`
+### `Main_Script.m`
 
 **Warning: This script is computationally intensive.**  
-It performs large-scale simulation and analysis and is designed to run on machines with **multiple CPU cores and ≥32 GB RAM**. It is not suitable for laptops or low-memory environments.
+It performs large-scale simulation and analysis and is designed to run on machines with **multiple CPU cores and high GB RAM**. It is not suitable for laptops or low-memory environments. Reducing ITERATIONS will reduce computational expense.
 
 ---
 
