@@ -73,7 +73,23 @@ Primary execution pipeline for generating a large multifractal tree and calculat
   - Information distance
   - Most recent common ancestors (MRCA)
   - Solutions to the dilation equation (real and complex)
-- Uses `parfeval` to parallelize chunk processing and saves each chunk to disk for later merging  
+- Uses `parfeval` to parallelize chunk processing and saves each chunk to disk for later merging
+
+### `MakeRandomTree.m`
+
+Generates a random rooted tree using a Galton–Watson branching process with a randomly sampled offspring distribution.  
+- Inputs:  
+  - `Max_Offspring`: maximum number of offspring per node  
+  - `Max_Gens`: maximum number of generations before termination  
+- Output:  
+  - `Tree`: the number of leaves (terminal nodes) in the final tree  
+- At each run, the function randomly selects a tree depth and samples a branching process, continuing until extinction or reaching the generation limit  
+- Returns only the **number of leaves**, not the tree structure — it is designed to integrate with scale propagation in `BuildMultifractalTreeFn`  
+- For full tree structure visualization, see the companion function `MakeRandomTreeForVisual.m` at:  
+  [github.com/KevinAndrewHudnall/the-living-tree-of-life](https://github.com/KevinAndrewHudnall/the-living-tree-of-life/tree/main/Functions)  
+
+This function underlies the iterative generation of nested subtrees in the multifractal tree-building process.
+
 - Tunable parameters: `Chunk_Size`, `MaxOffspring`, `MaxGens`, and convergence `Tolerance`  
 - Core script behind large-scale analyses and Figures 6–10 in the manuscript
 
