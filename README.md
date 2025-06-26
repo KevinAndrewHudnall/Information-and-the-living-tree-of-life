@@ -107,6 +107,25 @@ Performs **Multifractal Detrended Fluctuation Analysis (MF-DFA)** on each lineag
 
 Used in **Figure E1** of the manuscript to characterize the multifractal geometry of observer-relative paths through the tree of life.
 
+### `Statistical_Confirmation.m`
+
+Runs multiple full-system simulations to verify the statistical representativeness of key crosspath quantities reported in the manuscript.  
+- For each run, constructs a multifractal tree and samples `n` leaf paths  
+- Computes `nchoosek(n, 2)` pairwise comparisons per run  
+- For each comparison:
+  - Identifies the most recent common ancestor (MRCA)
+  - Computes crosspath entropy (H), mutual information (I), and information distance (d)
+  - Solves the dilation equation and classifies the solution (real/imaginary)  
+- Tallies proportions of:
+  - Coherent (d > 0) vs. divergent (d < 0) comparisons
+  - Real vs. imaginary solutions to the dilation equation
+  - Convergent, unresolved, and indeterminant cases  
+- Repeats this process across multiple runs (e.g., 10)  
+- Outputs the mean and standard deviation of all relevant proportions
+
+**Warning:** This script is computationally intensive and may require long runtime and high memory. It should be run on a workstation with multiple CPU cores and adequate RAM.
+
+Used to confirm the validity of statistics shown in Figures 10–12 in the manuscript.
 
 - Tunable parameters: `Chunk_Size`, `MaxOffspring`, `MaxGens`, and convergence `Tolerance`  
 - Core script behind large-scale analyses and Figures 6–10 in the manuscript
