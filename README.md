@@ -1,7 +1,7 @@
 # Information-and-the-Living-Tree-of-Life
 
 This repository contains all program and data files associated with the manuscript:  
-**_Information and the Living Tree of Life: A Theory of Time and Measurement Grounded in Biology_**.
+**_Information and the Living Tree of Life: A Theory of measurement grounded in biology_**.
 
 The code implements a stochastic, information-theoretic framework for understanding evolutionary dynamics, multifractal geometry, and observer-relative time.
 
